@@ -40,10 +40,10 @@ public class MLocation extends BaseModel {
 
     @Override
     public String toString() {
-        return "MLocation{" +
-                "id=" + id +
-                ", latitude=" + latitude +
-                ", longitude=" + longitude +
-                '}';
+        return "MLocation{"
+                + "id=" + id
+                + ", latitude=" + latitude
+                + ", longitude=" + longitude
+                + '}';
     }
 }

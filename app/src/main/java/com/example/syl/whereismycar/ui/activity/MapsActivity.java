@@ -1,6 +1,5 @@
 package com.example.syl.whereismycar.ui.activity;
 
-import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 
 import com.example.syl.whereismycar.R;
@@ -12,7 +11,8 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-public class MapsActivity extends BaseActivity implements OnMapReadyCallback, MapsPresenter.view, MapsPresenter.navigator {
+public class MapsActivity extends BaseActivity
+        implements OnMapReadyCallback, MapsPresenter.View, MapsPresenter.Navigator {
 
     private GoogleMap mMap;
 

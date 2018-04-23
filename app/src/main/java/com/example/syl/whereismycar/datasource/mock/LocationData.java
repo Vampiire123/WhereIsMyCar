@@ -67,6 +67,9 @@ public class LocationData implements LocationListener {
             case LocationProvider.TEMPORARILY_UNAVAILABLE:
                 Log.d("debug", "LocationProvider.TEMPORARILY_UNAVAILABLE");
                 break;
+            default:
+                Log.d("debug", "Undefined error");
+                break;
         }
     }
 }

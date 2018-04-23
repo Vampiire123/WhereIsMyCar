@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'checkstyle'
 def dbflow_version = "4.2.4"
 
 android {
@@ -19,12 +20,25 @@ android {
     }
 }
 
+task checkstyle(type: Checkstyle) {
+    configFile = rootProject.file('config/checkstyle.xml')
+
+    source 'src'
+    include '**/*.java'
+    exclude '**/gen/**'
+
+    classpath = files()
+}
+
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'com.android.support:appcompat-v7:27.1.1'
+    implementation 'com.android.support:support-media-compat:27.1.1'
+    implementation 'com.android.support:support-v4:27.1.1'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
+    implementation 'com.android.support.constraint:constraint-layout:1.1.0'
 
     //DBFlow
     annotationProcessor "com.github.Raizlabs.DBFlow:dbflow-processor:${dbflow_version}"
@@ -33,5 +47,4 @@ dependencies {
 
     //Map
     implementation 'com.google.android.gms:play-services-maps:15.0.0'
-    implementation 'com.android.support.constraint:constraint-layout:1.1.0'
 }

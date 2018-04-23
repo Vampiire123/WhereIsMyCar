@@ -18,7 +18,7 @@ import com.example.syl.whereismycar.usecase.DataLocations;
 import com.raizlabs.android.dbflow.config.FlowConfig;
 import com.raizlabs.android.dbflow.config.FlowManager;
 
-public class MainPresenter extends Presenter<MainPresenter.view, MainPresenter.navigator> {
+public class MainPresenter extends Presenter<MainPresenter.View, MainPresenter.Navigator> {
 
     Context context;
     DataLocations dataLocations;
@@ -37,7 +37,10 @@ public class MainPresenter extends Presenter<MainPresenter.view, MainPresenter.n
 
     @Override
     public void initialize() {
-        if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(context,
+                Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(context,
+                Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             view.showPermissionRequest();
         } else {
             locationStart();
@@ -101,7 +104,10 @@ public class MainPresenter extends Presenter<MainPresenter.view, MainPresenter.n
             Intent settingsIntent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
             context.startActivity(settingsIntent);
         }
-        if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(context,
+                Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(context,
+                Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             view.showPermissionRequest();
             return;
         }
@@ -126,7 +132,7 @@ public class MainPresenter extends Presenter<MainPresenter.view, MainPresenter.n
         view.showActualLocation(location, address);
     }
 
-    public interface view {
+    public interface View {
         void showActualLocation(Location location, String address);
 
         void showToastMessage(String msg);
@@ -134,7 +140,7 @@ public class MainPresenter extends Presenter<MainPresenter.view, MainPresenter.n
         void showPermissionRequest();
     }
 
-    public interface navigator {
+    public interface Navigator {
         void navigateToMap(MLocation mLocation);
     }
 }

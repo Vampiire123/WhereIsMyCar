@@ -2,7 +2,7 @@ package com.example.syl.whereismycar.ui.presenter;
 
 import android.content.Context;
 
-public class MapsPresenter extends Presenter<MapsPresenter.view, MapsPresenter.navigator>{
+public class MapsPresenter extends Presenter<MapsPresenter.View, MapsPresenter.Navigator> {
 
     Context context;
 
@@ -30,11 +30,11 @@ public class MapsPresenter extends Presenter<MapsPresenter.view, MapsPresenter.n
 
     }
 
-    public interface view {
+    public interface View {
 
     }
 
-    public interface navigator {
+    public interface Navigator {
 
     }
 }

@@ -16,29 +16,20 @@
 package com.example.syl.whereismycar.ui.activity;
 
 import android.Manifest;
-import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
 import android.os.Bundle;
-import android.os.Parcelable;
-import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
-import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.syl.whereismycar.R;
 import com.example.syl.whereismycar.datasource.mock.DataLocationsMockImpl;
-import com.example.syl.whereismycar.datasource.mock.LocationData;
 import com.example.syl.whereismycar.global.model.MLocation;
 import com.example.syl.whereismycar.ui.presenter.MainPresenter;
 
-public class MainActivity extends BaseActivity implements MainPresenter.view, MainPresenter.navigator {
+public class MainActivity extends BaseActivity implements MainPresenter.View, MainPresenter.Navigator {
 
     MainPresenter presenter;
 
@@ -62,15 +53,15 @@ public class MainActivity extends BaseActivity implements MainPresenter.view, Ma
         tv_actual_location.setText(getString(R.string.getting_location));
         btn_last_location = findViewById(R.id.btn_last_location);
         btn_save_location = findViewById(R.id.btn_save_location);
-        btn_last_location.setOnClickListener(new View.OnClickListener() {
+        btn_last_location.setOnClickListener(new android.view.View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(android.view.View v) {
                 presenter.onLoadLastLocationButtonClicked();
             }
         });
-        btn_save_location.setOnClickListener(new View.OnClickListener() {
+        btn_save_location.setOnClickListener(new android.view.View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(android.view.View v) {
                 presenter.onSaveLocationButtonClicked();
             }
         });
@@ -95,7 +86,7 @@ public class MainActivity extends BaseActivity implements MainPresenter.view, Ma
 
     @Override
     public void showPermissionRequest() {
-        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION,}, 1000);
+        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1000);
     }
 
     @Override
