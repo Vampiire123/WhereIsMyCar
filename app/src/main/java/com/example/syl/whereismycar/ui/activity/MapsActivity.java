@@ -15,15 +15,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private GoogleMap mMap;
 
+    float zoomLevel = 16.5f;
     double longitude, latitude;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map);
+
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
         longitude = (double) getIntent().getExtras().get("longitude");
@@ -34,9 +34,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(latitude, longitude);
-        mMap.addMarker(new MarkerOptions().position(sydney).title(getString(R.string.last_location)));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+        LatLng somePosition = new LatLng(latitude, longitude);
+        mMap.addMarker(new MarkerOptions().position(somePosition).title(getString(R.string.last_location)));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(somePosition, zoomLevel));
     }
 }

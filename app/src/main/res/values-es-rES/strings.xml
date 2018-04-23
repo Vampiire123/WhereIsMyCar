@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">WhereIsMyCar</string>
+    <string name="title_activity_maps">Mapa</string>
+    <string name="btn_save_location">Guardar localización</string>
+    <string name="btn_last_location">Última localización</string>
+    <string name="getting_location">Obteniendo localización...</string>
+    <string name="current_location">Localización actual:</string>
+    <string name="welcome_back">¡Bienvenido/a de vuelta!</string>
+    <string name="last_location">¡Tu última localización!</string>
+    <string name="saved_location">"Localización guardada en "</string>
+</resources>

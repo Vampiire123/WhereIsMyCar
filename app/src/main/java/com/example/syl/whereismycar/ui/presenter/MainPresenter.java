@@ -10,6 +10,7 @@ import android.location.LocationManager;
 import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 
+import com.example.syl.whereismycar.R;
 import com.example.syl.whereismycar.datasource.mock.DataLocationsMockImpl;
 import com.example.syl.whereismycar.datasource.mock.LocationData;
 import com.example.syl.whereismycar.global.model.MLocation;
@@ -42,7 +43,7 @@ public class MainPresenter extends Presenter<MainPresenter.view, MainPresenter.n
             locationStart();
         }
 
-        view.showToastMessage("Bienvenido/a de vuelta!");
+        view.showToastMessage(context.getString(R.string.welcome_back));
         FlowManager.init(new FlowConfig.Builder(context).build());
     }
 
@@ -65,7 +66,7 @@ public class MainPresenter extends Presenter<MainPresenter.view, MainPresenter.n
         dataLocations.saveLocation(this.actualLocation, new DataLocations.Listener() {
             @Override
             public void onSuccess(MLocation location) {
-                view.showToastMessage("Saved location in " + location.toString());
+                view.showToastMessage(context.getString(R.string.saved_location) + location.toString());
             }
 
             @Override

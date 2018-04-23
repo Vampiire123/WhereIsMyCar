@@ -83,10 +83,10 @@ public class MainActivity extends BaseActivity implements MainPresenter.view, Ma
     }
 
     @Override
-    public void showActualLocation(Location location, String calle) {
+    public void showActualLocation(Location location, String address) {
         tv_actual_location.setText(getString(R.string.current_location) + "\n"
                 + location.getLatitude() + " " + location.getLongitude() + "\n"
-                + calle);
+                + address);
     }
 
     @Override
