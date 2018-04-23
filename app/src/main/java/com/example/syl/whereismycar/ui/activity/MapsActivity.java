@@ -4,6 +4,7 @@ import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 
 import com.example.syl.whereismycar.R;
+import com.example.syl.whereismycar.ui.presenter.MapsPresenter;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -11,17 +12,23 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
+public class MapsActivity extends BaseActivity implements OnMapReadyCallback, MapsPresenter.view, MapsPresenter.navigator {
 
     private GoogleMap mMap;
 
     float zoomLevel = 16.5f;
     double longitude, latitude;
 
+    MapsPresenter mapsPresenter;
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_maps);
+
+        mapsPresenter = new MapsPresenter(this);
+        mapsPresenter.setView(this);
+        mapsPresenter.setNavigator(this);
+        mapsPresenter.initialize();
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
@@ -31,11 +38,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     @Override
+    int getLayoutId() {
+        return R.layout.activity_maps;
+    }
+
+    @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        LatLng somePosition = new LatLng(latitude, longitude);
-        mMap.addMarker(new MarkerOptions().position(somePosition).title(getString(R.string.last_location)));
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(somePosition, zoomLevel));
+        LatLng positionCar = new LatLng(latitude, longitude);
+        mMap.addMarker(new MarkerOptions().position(positionCar).title(getString(R.string.last_location)));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(positionCar, zoomLevel));
     }
 }

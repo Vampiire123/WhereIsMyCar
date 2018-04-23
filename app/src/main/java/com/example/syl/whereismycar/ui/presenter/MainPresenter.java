@@ -24,7 +24,7 @@ public class MainPresenter extends Presenter<MainPresenter.view, MainPresenter.n
     DataLocations dataLocations;
 
     Location actualLocation;
-    String calle;
+    String address;
 
     public MainPresenter(Context context, DataLocationsMockImpl getLocationMock) {
         this.context = context;
@@ -119,15 +119,15 @@ public class MainPresenter extends Presenter<MainPresenter.view, MainPresenter.n
         }
     }
 
-    public void setLocation(Location location, String calle) {
+    public void setLocation(Location location, String address) {
         this.actualLocation = location;
-        this.calle = calle;
+        this.address = address;
 
-        view.showActualLocation(location, calle);
+        view.showActualLocation(location, address);
     }
 
     public interface view {
-        void showActualLocation(Location location, String calle);
+        void showActualLocation(Location location, String address);
 
         void showToastMessage(String msg);
 
