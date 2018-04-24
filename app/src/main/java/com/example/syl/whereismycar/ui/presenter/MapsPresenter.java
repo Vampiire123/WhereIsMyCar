@@ -16,10 +16,22 @@
 package com.example.syl.whereismycar.ui.presenter;
 
 import android.content.Context;
+import android.content.Intent;
+
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 public class MapsPresenter extends Presenter<MapsPresenter.View, MapsPresenter.Navigator> {
 
     Context context;
+
+    private GoogleMap mMap;
+
+    float zoomLevel = 16.5f;
+    double longitude, latitude;
+    String address;
 
     public MapsPresenter(Context context) {
         this.context = context;
@@ -27,7 +39,6 @@ public class MapsPresenter extends Presenter<MapsPresenter.View, MapsPresenter.N
 
     @Override
     public void initialize() {
-
     }
 
     @Override
@@ -43,6 +54,20 @@ public class MapsPresenter extends Presenter<MapsPresenter.View, MapsPresenter.N
     @Override
     public void destroy() {
 
+    }
+
+    public void onExtrasReceived(Intent intent) {
+        longitude = (double) intent.getExtras().get("longitude");
+        latitude = (double) intent.getExtras().get("latitude");
+        address = (String) intent.getExtras().get("address");
+    }
+
+    public void onMapReady(GoogleMap googleMap) {
+        mMap = googleMap;
+
+        LatLng positionCar = new LatLng(latitude, longitude);
+        mMap.addMarker(new MarkerOptions().position(positionCar).title(address));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(positionCar, zoomLevel));
     }
 
     public interface View {

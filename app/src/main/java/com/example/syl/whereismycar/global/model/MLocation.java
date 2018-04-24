@@ -33,6 +33,9 @@ public class MLocation extends BaseModel {
     @Column
     double longitude;
 
+    @Column
+    String address;
+
     public int getId() {
         return id;
     }
@@ -53,12 +56,21 @@ public class MLocation extends BaseModel {
         this.longitude = longitude;
     }
 
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
     @Override
     public String toString() {
         return "MLocation{"
                 + "id=" + id
                 + ", latitude=" + latitude
                 + ", longitude=" + longitude
+                + ", address=" + address
                 + '}';
     }
 }

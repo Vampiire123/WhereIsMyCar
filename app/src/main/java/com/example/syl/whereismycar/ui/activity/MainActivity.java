@@ -20,12 +20,13 @@ import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
+import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.syl.whereismycar.R;
-import com.example.syl.whereismycar.datasource.mock.DataLocationsMockImpl;
+import com.example.syl.whereismycar.datasource.mock.DataLocationsDBImpl;
 import com.example.syl.whereismycar.global.model.MLocation;
 import com.example.syl.whereismycar.ui.presenter.MainPresenter;
 
@@ -33,16 +34,16 @@ public class MainActivity extends BaseActivity implements MainPresenter.View, Ma
 
     MainPresenter presenter;
 
-    DataLocationsMockImpl getLocationMock;
+    DataLocationsDBImpl getLocationMock;
 
-    Button btn_save_location, btn_last_location;
+    Button btn_save_location, btn_last_location, btn_delete_location;
     TextView tv_actual_location;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        getLocationMock = new DataLocationsMockImpl();
+        getLocationMock = new DataLocationsDBImpl();
 
         presenter = new MainPresenter(this, getLocationMock);
         presenter.setView(this);
@@ -53,6 +54,7 @@ public class MainActivity extends BaseActivity implements MainPresenter.View, Ma
         tv_actual_location.setText(getString(R.string.getting_location));
         btn_last_location = findViewById(R.id.btn_last_location);
         btn_save_location = findViewById(R.id.btn_save_location);
+        btn_delete_location = findViewById(R.id.btn_delete_location);
         btn_last_location.setOnClickListener(new android.view.View.OnClickListener() {
             @Override
             public void onClick(android.view.View v) {
@@ -63,6 +65,12 @@ public class MainActivity extends BaseActivity implements MainPresenter.View, Ma
             @Override
             public void onClick(android.view.View v) {
                 presenter.onSaveLocationButtonClicked();
+            }
+        });
+        btn_delete_location.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenter.onDeleteLocationButtonClicked();
             }
         });
     }
@@ -93,7 +101,8 @@ public class MainActivity extends BaseActivity implements MainPresenter.View, Ma
     public void navigateToMap(MLocation location) {
         startActivity(new Intent(this, MapsActivity.class)
                 .putExtra("latitude", location.getLatitude())
-                .putExtra("longitude", location.getLongitude()));
+                .putExtra("longitude", location.getLongitude())
+                .putExtra("address", location.getAddress()));
     }
 
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {

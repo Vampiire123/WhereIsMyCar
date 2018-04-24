@@ -29,27 +29,21 @@ import com.google.android.gms.maps.model.MarkerOptions;
 public class MapsActivity extends BaseActivity
         implements OnMapReadyCallback, MapsPresenter.View, MapsPresenter.Navigator {
 
-    private GoogleMap mMap;
-
-    float zoomLevel = 16.5f;
-    double longitude, latitude;
-
-    MapsPresenter mapsPresenter;
+    MapsPresenter presenter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mapsPresenter = new MapsPresenter(this);
-        mapsPresenter.setView(this);
-        mapsPresenter.setNavigator(this);
-        mapsPresenter.initialize();
+        presenter = new MapsPresenter(this);
+        presenter.setView(this);
+        presenter.setNavigator(this);
+
+        presenter.initialize();
+        presenter.onExtrasReceived(getIntent());
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-
-        longitude = (double) getIntent().getExtras().get("longitude");
-        latitude = (double) getIntent().getExtras().get("latitude");
     }
 
     @Override
@@ -59,10 +53,6 @@ public class MapsActivity extends BaseActivity
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        mMap = googleMap;
-
-        LatLng positionCar = new LatLng(latitude, longitude);
-        mMap.addMarker(new MarkerOptions().position(positionCar).title(getString(R.string.last_location)));
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(positionCar, zoomLevel));
+        presenter.onMapReady(googleMap);
     }
 }

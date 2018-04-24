@@ -19,35 +19,36 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.Bundle;
 import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 
 import com.example.syl.whereismycar.R;
-import com.example.syl.whereismycar.datasource.mock.DataLocationsMockImpl;
-import com.example.syl.whereismycar.datasource.mock.LocationData;
+import com.example.syl.whereismycar.datasource.mock.DataLocationsDBImpl;
 import com.example.syl.whereismycar.global.model.MLocation;
 import com.example.syl.whereismycar.usecase.DataLocations;
 import com.raizlabs.android.dbflow.config.FlowConfig;
 import com.raizlabs.android.dbflow.config.FlowManager;
 
-public class MainPresenter extends Presenter<MainPresenter.View, MainPresenter.Navigator> {
+import java.io.IOException;
+import java.util.List;
+import java.util.Locale;
+
+public class MainPresenter extends Presenter<MainPresenter.View, MainPresenter.Navigator> implements LocationListener {
 
     Context context;
     DataLocations dataLocations;
 
-    Location actualLocation;
-    String address;
+    MLocation actualLocation;
 
-    public MainPresenter(Context context, DataLocationsMockImpl getLocationMock) {
+    public MainPresenter(Context context, DataLocationsDBImpl getLocationMock) {
         this.context = context;
         this.dataLocations = getLocationMock;
-    }
-
-    public Context getContext() {
-        return this.context;
     }
 
     @Override
@@ -88,8 +89,8 @@ public class MainPresenter extends Presenter<MainPresenter.View, MainPresenter.N
             }
 
             @Override
-            public void onError(String msg) {
-                view.showToastMessage(msg);
+            public void onError() {
+                view.showToastMessage(context.getString(R.string.error_saving_location));
             }
         });
     }
@@ -103,16 +104,22 @@ public class MainPresenter extends Presenter<MainPresenter.View, MainPresenter.N
             }
 
             @Override
-            public void onError(String msg) {
-                view.showToastMessage(msg);
+            public void onError() {
+                view.showToastMessage(context.getString(R.string.error_loading_location));
             }
         });
     }
 
+    public void onDeleteLocationButtonClicked() {
+        if(dataLocations.deleteLocations()) {
+           view.showToastMessage(context.getString(R.string.delete_completed));
+        } else {
+            view.showToastMessage(context.getString(R.string.delete_incompleted));
+        }
+    }
+
     private void locationStart() {
         LocationManager mlocManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
-        LocationData locationData = new LocationData();
-        locationData.setMainPresenter(this);
 
         final boolean gpsEnabled = mlocManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
         if (!gpsEnabled) {
@@ -126,8 +133,8 @@ public class MainPresenter extends Presenter<MainPresenter.View, MainPresenter.N
             view.showPermissionRequest();
             return;
         }
-        mlocManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, (LocationListener) locationData);
-        mlocManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, (LocationListener) locationData);
+        mlocManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, this);
+        mlocManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
     }
 
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
@@ -141,10 +148,47 @@ public class MainPresenter extends Presenter<MainPresenter.View, MainPresenter.N
     }
 
     public void setLocation(Location location, String address) {
-        this.actualLocation = location;
-        this.address = address;
+        actualLocation = new MLocation();
+        actualLocation.setLatitude(location.getLatitude());
+        actualLocation.setLongitude(location.getLongitude());
+        actualLocation.setAddress(address);
 
         view.showActualLocation(location, address);
+    }
+
+    @Override
+    public void onLocationChanged(Location loc) {
+        String calle = "";
+        if (loc.getLatitude() != 0.0 && loc.getLongitude() != 0.0) {
+            try {
+                Geocoder geocoder = new Geocoder(context, Locale.getDefault());
+                List<Address> list = geocoder.getFromLocation(
+                        loc.getLatitude(), loc.getLongitude(), 1);
+                if (!list.isEmpty()) {
+                    Address DirCalle = list.get(0);
+                    calle = DirCalle.getAddressLine(0);
+                }
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        setLocation(loc, calle);
+    }
+
+    @Override
+    public void onStatusChanged(String provider, int status, Bundle extras) {
+
+    }
+
+    @Override
+    public void onProviderEnabled(String provider) {
+
+    }
+
+    @Override
+    public void onProviderDisabled(String provider) {
+
     }
 
     public interface View {

@@ -15,8 +15,6 @@
  */
 package com.example.syl.whereismycar.datasource.mock;
 
-import android.location.Location;
-
 import com.example.syl.whereismycar.global.model.MLocation;
 import com.example.syl.whereismycar.global.model.MLocation_Table;
 import com.example.syl.whereismycar.usecase.DataLocations;
@@ -24,7 +22,7 @@ import com.raizlabs.android.dbflow.sql.language.SQLite;
 
 import java.util.List;
 
-public class DataLocationsMockImpl implements DataLocations {
+public class DataLocationsDBImpl implements DataLocations {
 
     static final int LIMIT = 5;
 
@@ -37,28 +35,33 @@ public class DataLocationsMockImpl implements DataLocations {
         if (lastLocation != null) {
             listener.onSuccess(lastLocation);
         } else {
-            listener.onError("You don't have last location");
+            listener.onError();
         }
     }
 
     @Override
-    public void saveLocation(Location location, Listener listener) {
+    public void saveLocation(MLocation location, Listener listener) {
         checkSizeMLocationTable();
 
-        MLocation mLocation = new MLocation();
-        mLocation.setLatitude(location.getLatitude());
-        mLocation.setLongitude(location.getLongitude());
-
-        if (mLocation.save()) {
-            listener.onSuccess(mLocation);
+        if (location.save()) {
+            listener.onSuccess(location);
         } else {
-            listener.onError("Error saving location");
+            listener.onError();
+        }
+    }
+
+    @Override
+    public boolean deleteLocations() {
+        if (SQLite.delete().from(MLocation.class).executeUpdateDelete() != 0) {
+            return true;
+        } else {
+            return false;
         }
     }
 
     private void checkSizeMLocationTable() {
         List<MLocation> mLocations = SQLite.select().from(MLocation.class).queryList();
-        if (mLocations.size() >= DataLocationsMockImpl.LIMIT) {
+        if (mLocations.size() >= DataLocationsDBImpl.LIMIT) {
             SQLite.delete().from(MLocation.class).where(MLocation_Table.id.eq(mLocations.get(0).getId())).execute();
         }
     }

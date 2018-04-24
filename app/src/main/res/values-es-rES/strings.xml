@@ -7,6 +7,10 @@
     <string name="getting_location">Obteniendo localización...</string>
     <string name="current_location">Localización actual:</string>
     <string name="welcome_back">¡Bienvenido/a de vuelta!</string>
-    <string name="last_location">¡Tu última localización!</string>
     <string name="saved_location">"Localización guardada en "</string>
+    <string name="delete_completed">Borradas todas las localizaciones</string>
+    <string name="delete_incompleted">No se pudo borrar</string>
+    <string name="delete">Borrar</string>
+    <string name="error_saving_location">No se pudo guardar la localización</string>
+    <string name="error_loading_location">No tienes última posición</string>
 </resources>

@@ -5,7 +5,11 @@
     <string name="btn_last_location">Last location</string>
     <string name="getting_location">Getting location...</string>
     <string name="current_location">Current location:</string>
-    <string name="last_location">Your last position!</string>
     <string name="welcome_back">Welcome back!</string>
     <string name="saved_location">Saved location in</string>
+    <string name="delete_completed">Deleted every location</string>
+    <string name="delete_incompleted">Couldn\'t delete</string>
+    <string name="delete">Delete</string>
+    <string name="error_saving_location">Error saving location</string>
+    <string name="error_loading_location">You don\'t have last position</string>
 </resources>
