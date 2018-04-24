@@ -7,13 +7,19 @@ Hey everyone! this is a little example in MVP of get current location and show i
 - Library play services map (Map)
 - MVP pattern
 
+## How to use  
+It's very simple to use, you just have to save your location when you leave your car in some place. Then you will have the option to load the last location you saved in the database and it will show you in the map!
+
+<img src="https://i.imgur.com/s5JF52T.jpg" height="500px">
+<img src="https://i.imgur.com/Z8e9dLW.jpg" height="500px">
+
 ## Developed By
 - Sylvia Domenech
 
 	Contact me on:
-<a href="mailto:s4domenech@gmail.com">
-	<img src="https://camo.githubusercontent.com/95f5d73decc4a13cdd1ff301cfda3ebb850fe7ef/687474703a2f2f706e67696d672e636f6d2f75706c6f6164732f676d61696c5f6c6f676f2f676d61696c5f6c6f676f5f504e4731302e706e67" height="50px" width="50px" data-canonical-src="http://pngimg.com/uploads/gmail_logo/gmail_logo_PNG10.png" style="max-width:100%;">
-</a>
+	<a href="mailto:s4domenech@gmail.com">
+		<img src="https://camo.githubusercontent.com/95f5d73decc4a13cdd1ff301cfda3ebb850fe7ef/687474703a2f2f706e67696d672e636f6d2f75706c6f6164732f676d61696c5f6c6f676f2f676d61696c5f6c6f676f5f504e4731302e706e67" height="50px" width="50px" data-canonical-src="http://pngimg.com/uploads/gmail_logo/gmail_logo_PNG10.png" style="max-width:100%;">
+	</a>
 
 ## License
 
