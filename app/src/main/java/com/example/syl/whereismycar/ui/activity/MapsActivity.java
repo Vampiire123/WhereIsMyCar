@@ -35,6 +35,9 @@ public class MapsActivity extends BaseActivity
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setIcon(R.mipmap.ic_launcher);
+
         presenter = new MapsPresenter(this);
         presenter.setView(this);
         presenter.setNavigator(this);

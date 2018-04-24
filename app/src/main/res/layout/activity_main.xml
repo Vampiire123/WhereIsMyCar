@@ -5,28 +5,19 @@
     android:id="@+id/linearLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/wallpaper_activity_main"
     android:orientation="vertical"
     android:padding="20dp"
     tools:layout_editor_absoluteY="81dp">
 
     <Button
-        android:id="@+id/btn_delete_location"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/delete"
-        app:layout_constraintBottom_toTopOf="@+id/tv_actual_location"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_save_location" />
-
-    <Button
         android:id="@+id/btn_save_location"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:background="@drawable/button"
         android:text="@string/btn_save_location"
-        app:layout_constraintBottom_toTopOf="@+id/btn_delete_location"
-        app:layout_constraintEnd_toStartOf="@+id/btn_last_location"
+        app:layout_constraintBottom_toTopOf="@+id/btn_last_location"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -35,19 +26,32 @@
         android:id="@+id/btn_last_location"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:background="@drawable/button"
         android:text="@string/btn_last_location"
         app:layout_constraintBottom_toTopOf="@+id/btn_delete_location"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/btn_save_location"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_save_location" />
+
+    <Button
+        android:id="@+id/btn_delete_location"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/button"
+        android:text="@string/delete"
+        app:layout_constraintBottom_toTopOf="@+id/tv_actual_location"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_last_location" />
 
     <TextView
         android:id="@+id/tv_actual_location"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Location"
-        android:textColor="@android:color/background_dark"
+        android:textColor="@color/common_google_signin_btn_text_dark_default"
         android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
