@@ -111,7 +111,7 @@ public class MainPresenter extends Presenter<MainPresenter.View, MainPresenter.N
     }
 
     public void onDeleteLocationButtonClicked() {
-        if(dataLocations.deleteLocations()) {
+        if (dataLocations.deleteLocations()) {
            view.showToastMessage(context.getString(R.string.delete_completed));
         } else {
             view.showToastMessage(context.getString(R.string.delete_incompleted));

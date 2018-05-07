@@ -52,11 +52,7 @@ public class DataLocationsDBImpl implements DataLocations {
 
     @Override
     public boolean deleteLocations() {
-        if (SQLite.delete().from(MLocation.class).executeUpdateDelete() != 0) {
-            return true;
-        } else {
-            return false;
-        }
+        return SQLite.delete().from(MLocation.class).executeUpdateDelete() != 0;
     }
 
     private void checkSizeMLocationTable() {
