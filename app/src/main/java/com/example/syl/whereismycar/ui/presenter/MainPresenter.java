@@ -18,7 +18,6 @@ package com.example.syl.whereismycar.ui.presenter;
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
-import android.location.Location;
 
 import com.example.syl.whereismycar.R;
 import com.example.syl.whereismycar.datasource.db.DataLocationsDBImpl;
@@ -53,14 +52,14 @@ public class MainPresenter extends Presenter<MainPresenter.View, MainPresenter.N
 
                 @Override
                 public void onError() {
-                    view.showToastMessage(context.getString(R.string.error_getting_location));
+                    view.showMessage(context.getString(R.string.error_getting_location));
                 }
             });
         } else {
             view.showPermissionRequest();
         }
 
-        view.showToastMessage(context.getString(R.string.welcome_back));
+        view.showMessage(context.getString(R.string.welcome_back));
     }
 
     @Override
@@ -82,12 +81,12 @@ public class MainPresenter extends Presenter<MainPresenter.View, MainPresenter.N
         dataLocations.saveLocationToDB(this.actualLocation, new DataLocations.Listener() {
             @Override
             public void onSuccess(MLocation location) {
-                view.showToastMessage(context.getString(R.string.saved_location) + location.toString());
+                view.showMessage(context.getString(R.string.saved_location) + location.toString());
             }
 
             @Override
             public void onError() {
-                view.showToastMessage(context.getString(R.string.error_saving_location));
+                view.showMessage(context.getString(R.string.error_saving_location));
             }
         });
     }
@@ -96,22 +95,22 @@ public class MainPresenter extends Presenter<MainPresenter.View, MainPresenter.N
         dataLocations.getLocationFromDB(new DataLocations.Listener() {
             @Override
             public void onSuccess(MLocation location) {
-                view.showToastMessage(location.toString());
+                view.showMessage(location.toString());
                 navigator.navigateToMap(location);
             }
 
             @Override
             public void onError() {
-                view.showToastMessage(context.getString(R.string.error_loading_location));
+                view.showMessage(context.getString(R.string.error_loading_location));
             }
         });
     }
 
     public void onDeleteLocationButtonClicked() {
         if (dataLocations.deleteLocationsFromDB()) {
-            view.showToastMessage(context.getString(R.string.delete_completed));
+            view.showMessage(context.getString(R.string.delete_completed));
         } else {
-            view.showToastMessage(context.getString(R.string.delete_incompleted));
+            view.showMessage(context.getString(R.string.delete_incompleted));
         }
     }
 
@@ -126,7 +125,7 @@ public class MainPresenter extends Presenter<MainPresenter.View, MainPresenter.N
 
                     @Override
                     public void onError() {
-                        view.showToastMessage(context.getString(R.string.error_getting_location));
+                        view.showMessage(context.getString(R.string.error_getting_location));
                     }
                 });
             } else {
@@ -137,7 +136,7 @@ public class MainPresenter extends Presenter<MainPresenter.View, MainPresenter.N
 
     public interface View {
         void showActualLocation(MLocation mLocation);
-        void showToastMessage(String msg);
+        void showMessage(String msg);
         void showPermissionRequest();
     }
 

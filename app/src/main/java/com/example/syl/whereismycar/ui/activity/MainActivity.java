@@ -90,7 +90,7 @@ public class MainActivity extends BaseActivity implements MainPresenter.View, Ma
     }
 
     @Override
-    public void showToastMessage(String msg) {
+    public void showMessage(String msg) {
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
     }
 
