@@ -100,7 +100,32 @@ public class MainPresenterTest {
 
         verify(mockView).showMessage(stringCaptor.capture());
 
-        assertEquals(stringCaptor.getValue(), "Saved location");
+        assertEquals(stringCaptor.getValue(), "Saved location MLocation{id=0, latitude=0.0, longitude=0.0, address=null}");
+    }
+
+    @Test
+    public void shouldShowErrorMessageWhenSaveLocationButtonIsClickedAndDBReturnsError(){
+        givenMockedStrings();
+        givenErrorSavingLocationToDB();
+
+        presenter.onSaveLocationButtonClicked();
+
+        ArgumentCaptor<String> stringCaptor = ArgumentCaptor.forClass(String.class);
+
+        verify(mockView).showMessage(stringCaptor.capture());
+
+        assertEquals(stringCaptor.getValue(), "Error saving location");
+    }
+
+    private void givenErrorSavingLocationToDB() {
+        doAnswer(new Answer() {
+            @Override
+            public Object answer(InvocationOnMock invocation) throws Throwable {
+                DataLocations.Listener listener = (DataLocations.Listener) invocation.getArguments()[1];
+                listener.onError();
+                return null;
+            }
+        }).when(mockDataLocationsDBImpl).saveLocationToDB(any(MLocation.class), any(DataLocations.Listener.class));
     }
 
     private void givenSaveLocationToDB(final MLocation location) {
@@ -140,6 +165,7 @@ public class MainPresenterTest {
         when(mockContext.getString(R.string.error_getting_location)).thenReturn("Error getting actual location");
         when(mockContext.getString(R.string.welcome_back)).thenReturn("Welcome back!");
         when(mockContext.getString(R.string.saved_location)).thenReturn("Saved location");
+        when(mockContext.getString(R.string.error_saving_location)).thenReturn("Error saving location");
     }
 
     private void givenPermissions(boolean permission) {

@@ -31,7 +31,7 @@ public class MainPresenter extends Presenter<MainPresenter.View, MainPresenter.N
     DataLocations dataLocations;
     CheckPermission checkPermission;
 
-    MLocation actualLocation;
+    MLocation actualLocation = new MLocation();
 
     public MainPresenter(Context context, DataLocationsDBImpl getLocationDBImpl, CheckPermission checkPermission) {
         this.context = context;
@@ -81,7 +81,7 @@ public class MainPresenter extends Presenter<MainPresenter.View, MainPresenter.N
         dataLocations.saveLocationToDB(this.actualLocation, new DataLocations.Listener() {
             @Override
             public void onSuccess(MLocation location) {
-                view.showMessage(context.getString(R.string.saved_location) + location.toString());
+                view.showMessage(context.getString(R.string.saved_location) + " " + location.toString());
             }
 
             @Override
