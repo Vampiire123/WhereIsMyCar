@@ -15,7 +15,16 @@
  */
 package com.example.syl.whereismycar.datasource.db;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
+import android.os.Bundle;
+import android.provider.Settings;
 import android.support.v4.content.ContextCompat;
 
 import com.example.syl.whereismycar.global.model.MLocation;
@@ -25,11 +34,14 @@ import com.raizlabs.android.dbflow.config.FlowConfig;
 import com.raizlabs.android.dbflow.config.FlowManager;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 
+import java.io.IOException;
 import java.util.List;
+import java.util.Locale;
 
-public class DataLocationsDBImpl implements DataLocations {
+public class DataLocationsDBImpl implements DataLocations, LocationListener {
 
     Context context;
+    Listener listener;
 
     static final int LIMIT = 5;
 
@@ -42,8 +54,24 @@ public class DataLocationsDBImpl implements DataLocations {
         FlowManager.init(new FlowConfig.Builder(context).build());
     }
 
+    @SuppressLint("MissingPermission")
     @Override
-    public void getLocation(Listener listener) {
+    public void getCurrentLocation(Listener listener) {
+        this.listener = listener;
+
+        LocationManager mlocManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+
+        final boolean gpsEnabled = mlocManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+        if (!gpsEnabled) {
+            Intent settingsIntent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+            context.startActivity(settingsIntent);
+        }
+        mlocManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, this);
+        mlocManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
+    }
+
+    @Override
+    public void getLocationFromDB(Listener listener) {
         MLocation lastLocation = SQLite.select().from(MLocation.class)
                 .orderBy(MLocation_Table.id, false)
                 .querySingle();
@@ -56,7 +84,7 @@ public class DataLocationsDBImpl implements DataLocations {
     }
 
     @Override
-    public void saveLocation(MLocation location, Listener listener) {
+    public void saveLocationToDB(MLocation location, Listener listener) {
         checkSizeMLocationTable();
 
         if (location.save()) {
@@ -67,7 +95,7 @@ public class DataLocationsDBImpl implements DataLocations {
     }
 
     @Override
-    public boolean deleteLocations() {
+    public boolean deleteLocationsFromDB() {
         return SQLite.delete().from(MLocation.class).executeUpdateDelete() != 0;
     }
 
@@ -76,5 +104,45 @@ public class DataLocationsDBImpl implements DataLocations {
         if (mLocations.size() >= DataLocationsDBImpl.LIMIT) {
             SQLite.delete().from(MLocation.class).where(MLocation_Table.id.eq(mLocations.get(0).getId())).execute();
         }
+    }
+
+    @Override
+    public void onLocationChanged(Location loc) {
+        String calle = "";
+        if (loc.getLatitude() != 0.0 && loc.getLongitude() != 0.0) {
+            try {
+                Geocoder geocoder = new Geocoder(context, Locale.getDefault());
+                List<Address> list = geocoder.getFromLocation(
+                        loc.getLatitude(), loc.getLongitude(), 1);
+                if (!list.isEmpty()) {
+                    Address DirCalle = list.get(0);
+                    calle = DirCalle.getAddressLine(0);
+                }
+
+            } catch (IOException e) {
+                e.printStackTrace();
+                listener.onError();
+            }
+        }
+        MLocation mLocation = new MLocation();
+        mLocation.setLongitude(loc.getLongitude());
+        mLocation.setLatitude(loc.getLatitude());
+        mLocation.setAddress(calle);
+        listener.onSuccess(mLocation);
+    }
+
+    @Override
+    public void onStatusChanged(String provider, int status, Bundle extras) {
+        /*Empty method*/
+    }
+
+    @Override
+    public void onProviderEnabled(String provider) {
+        /*Empty method*/
+    }
+
+    @Override
+    public void onProviderDisabled(String provider) {
+        /*Empty method*/
     }
 }

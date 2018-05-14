@@ -16,6 +16,7 @@
 package com.example.syl.whereismycar.ui.activity;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
@@ -81,10 +82,11 @@ public class MainActivity extends BaseActivity implements MainPresenter.View, Ma
         return R.layout.activity_main;
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
-    public void showActualLocation(Location location, String address) {
-        tv_actual_location.setText(getString(R.string.current_location) + "\n" + address + "\n"
-                + location.getLatitude() + " " + location.getLongitude());
+    public void showActualLocation(MLocation mLocation) {
+        tv_actual_location.setText(getString(R.string.current_location) + "\n" + mLocation.getAddress() + "\n"
+                + mLocation.getLatitude() + " " + mLocation.getLongitude());
     }
 
     @Override

@@ -16,32 +16,17 @@
 package com.example.syl.whereismycar.ui.presenter;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.location.Address;
-import android.location.Geocoder;
 import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
-import android.os.Bundle;
-import android.provider.Settings;
-import android.support.v4.app.ActivityCompat;
 
 import com.example.syl.whereismycar.R;
 import com.example.syl.whereismycar.datasource.db.DataLocationsDBImpl;
 import com.example.syl.whereismycar.global.model.MLocation;
 import com.example.syl.whereismycar.usecase.CheckPermission;
 import com.example.syl.whereismycar.usecase.DataLocations;
-import com.raizlabs.android.dbflow.config.FlowConfig;
-import com.raizlabs.android.dbflow.config.FlowManager;
 
-import java.io.IOException;
-import java.util.List;
-import java.util.Locale;
-
-public class MainPresenter extends Presenter<MainPresenter.View, MainPresenter.Navigator> implements LocationListener {
+public class MainPresenter extends Presenter<MainPresenter.View, MainPresenter.Navigator> {
 
     Context context;
     DataLocations dataLocations;
@@ -59,7 +44,18 @@ public class MainPresenter extends Presenter<MainPresenter.View, MainPresenter.N
     public void initialize() {
         boolean locationGranted = checkPermission.isPermissionGranted(Manifest.permission.ACCESS_FINE_LOCATION);
         if (locationGranted) {
-            locationStart();
+            dataLocations.getCurrentLocation(new DataLocations.Listener() {
+                @Override
+                public void onSuccess(MLocation location) {
+                    actualLocation = location;
+                    view.showActualLocation(location);
+                }
+
+                @Override
+                public void onError() {
+                    view.showToastMessage(context.getString(R.string.error_getting_location));
+                }
+            });
         } else {
             view.showPermissionRequest();
         }
@@ -83,7 +79,7 @@ public class MainPresenter extends Presenter<MainPresenter.View, MainPresenter.N
     }
 
     public void onSaveLocationButtonClicked() {
-        dataLocations.saveLocation(this.actualLocation, new DataLocations.Listener() {
+        dataLocations.saveLocationToDB(this.actualLocation, new DataLocations.Listener() {
             @Override
             public void onSuccess(MLocation location) {
                 view.showToastMessage(context.getString(R.string.saved_location) + location.toString());
@@ -97,7 +93,7 @@ public class MainPresenter extends Presenter<MainPresenter.View, MainPresenter.N
     }
 
     public void onLoadLastLocationButtonClicked() {
-        dataLocations.getLocation(new DataLocations.Listener() {
+        dataLocations.getLocationFromDB(new DataLocations.Listener() {
             @Override
             public void onSuccess(MLocation location) {
                 view.showToastMessage(location.toString());
@@ -112,82 +108,35 @@ public class MainPresenter extends Presenter<MainPresenter.View, MainPresenter.N
     }
 
     public void onDeleteLocationButtonClicked() {
-        if (dataLocations.deleteLocations()) {
+        if (dataLocations.deleteLocationsFromDB()) {
             view.showToastMessage(context.getString(R.string.delete_completed));
         } else {
             view.showToastMessage(context.getString(R.string.delete_incompleted));
         }
     }
 
-    @SuppressLint("MissingPermission")
-    private void locationStart() {
-        LocationManager mlocManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
-
-        final boolean gpsEnabled = mlocManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
-        if (!gpsEnabled) {
-            Intent settingsIntent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-            context.startActivity(settingsIntent);
-        }
-        mlocManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, this);
-        mlocManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
-    }
-
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         if (requestCode == 1000) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                locationStart();
+                dataLocations.getCurrentLocation(new DataLocations.Listener() {
+                    @Override
+                    public void onSuccess(MLocation location) {
+                        view.showActualLocation(location);
+                    }
+
+                    @Override
+                    public void onError() {
+                        view.showToastMessage(context.getString(R.string.error_getting_location));
+                    }
+                });
             } else {
                 System.exit(0);
             }
         }
     }
 
-    public void setLocation(Location location, String address) {
-        actualLocation = new MLocation();
-        actualLocation.setLatitude(location.getLatitude());
-        actualLocation.setLongitude(location.getLongitude());
-        actualLocation.setAddress(address);
-
-        view.showActualLocation(location, address);
-    }
-
-    @Override
-    public void onLocationChanged(Location loc) {
-        String calle = "";
-        if (loc.getLatitude() != 0.0 && loc.getLongitude() != 0.0) {
-            try {
-                Geocoder geocoder = new Geocoder(context, Locale.getDefault());
-                List<Address> list = geocoder.getFromLocation(
-                        loc.getLatitude(), loc.getLongitude(), 1);
-                if (!list.isEmpty()) {
-                    Address DirCalle = list.get(0);
-                    calle = DirCalle.getAddressLine(0);
-                }
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        setLocation(loc, calle);
-    }
-
-    @Override
-    public void onStatusChanged(String provider, int status, Bundle extras) {
-
-    }
-
-    @Override
-    public void onProviderEnabled(String provider) {
-
-    }
-
-    @Override
-    public void onProviderDisabled(String provider) {
-
-    }
-
     public interface View {
-        void showActualLocation(Location location, String address);
+        void showActualLocation(MLocation mLocation);
         void showToastMessage(String msg);
         void showPermissionRequest();
     }

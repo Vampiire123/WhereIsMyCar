@@ -19,9 +19,10 @@ import com.example.syl.whereismycar.global.model.MLocation;
 
 public interface DataLocations {
 
-    void getLocation(Listener listener);
-    void saveLocation(MLocation location, Listener listener);
-    boolean deleteLocations();
+    void getCurrentLocation(Listener listener);
+    void getLocationFromDB(Listener listener);
+    void saveLocationToDB(MLocation location, Listener listener);
+    boolean deleteLocationsFromDB();
 
     interface Listener {
         void onSuccess(MLocation location);

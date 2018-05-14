@@ -12,4 +12,5 @@
     <string name="delete">Delete locations</string>
     <string name="error_saving_location">Error saving location</string>
     <string name="error_loading_location">You don\'t have last position</string>
+    <string name="error_getting_location">Error getting your current location</string>
 </resources>
