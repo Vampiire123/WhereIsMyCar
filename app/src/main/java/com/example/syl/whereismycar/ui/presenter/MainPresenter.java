@@ -16,6 +16,7 @@
 package com.example.syl.whereismycar.ui.presenter;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -29,8 +30,9 @@ import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 
 import com.example.syl.whereismycar.R;
-import com.example.syl.whereismycar.datasource.mock.DataLocationsDBImpl;
+import com.example.syl.whereismycar.datasource.db.DataLocationsDBImpl;
 import com.example.syl.whereismycar.global.model.MLocation;
+import com.example.syl.whereismycar.usecase.CheckPermission;
 import com.example.syl.whereismycar.usecase.DataLocations;
 import com.raizlabs.android.dbflow.config.FlowConfig;
 import com.raizlabs.android.dbflow.config.FlowManager;
@@ -43,27 +45,26 @@ public class MainPresenter extends Presenter<MainPresenter.View, MainPresenter.N
 
     Context context;
     DataLocations dataLocations;
+    CheckPermission checkPermission;
 
     MLocation actualLocation;
 
-    public MainPresenter(Context context, DataLocationsDBImpl getLocationMock) {
+    public MainPresenter(Context context, DataLocationsDBImpl getLocationDBImpl, CheckPermission checkPermission) {
         this.context = context;
-        this.dataLocations = getLocationMock;
+        this.dataLocations = getLocationDBImpl;
+        this.checkPermission = checkPermission;
     }
 
     @Override
     public void initialize() {
-        if (ActivityCompat.checkSelfPermission(context,
-                Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                && ActivityCompat.checkSelfPermission(context,
-                Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            view.showPermissionRequest();
-        } else {
+        boolean locationGranted = checkPermission.isPermissionGranted(Manifest.permission.ACCESS_FINE_LOCATION);
+        if (locationGranted) {
             locationStart();
+        } else {
+            view.showPermissionRequest();
         }
 
         view.showToastMessage(context.getString(R.string.welcome_back));
-        FlowManager.init(new FlowConfig.Builder(context).build());
     }
 
     @Override
@@ -112,12 +113,13 @@ public class MainPresenter extends Presenter<MainPresenter.View, MainPresenter.N
 
     public void onDeleteLocationButtonClicked() {
         if (dataLocations.deleteLocations()) {
-           view.showToastMessage(context.getString(R.string.delete_completed));
+            view.showToastMessage(context.getString(R.string.delete_completed));
         } else {
             view.showToastMessage(context.getString(R.string.delete_incompleted));
         }
     }
 
+    @SuppressLint("MissingPermission")
     private void locationStart() {
         LocationManager mlocManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
 
@@ -125,13 +127,6 @@ public class MainPresenter extends Presenter<MainPresenter.View, MainPresenter.N
         if (!gpsEnabled) {
             Intent settingsIntent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
             context.startActivity(settingsIntent);
-        }
-        if (ActivityCompat.checkSelfPermission(context,
-                Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                && ActivityCompat.checkSelfPermission(context,
-                Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            view.showPermissionRequest();
-            return;
         }
         mlocManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, this);
         mlocManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
@@ -193,9 +188,7 @@ public class MainPresenter extends Presenter<MainPresenter.View, MainPresenter.N
 
     public interface View {
         void showActualLocation(Location location, String address);
-
         void showToastMessage(String msg);
-
         void showPermissionRequest();
     }
 

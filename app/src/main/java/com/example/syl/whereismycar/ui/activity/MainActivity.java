@@ -26,15 +26,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.syl.whereismycar.R;
-import com.example.syl.whereismycar.datasource.mock.DataLocationsDBImpl;
+import com.example.syl.whereismycar.datasource.db.DataLocationsDBImpl;
+import com.example.syl.whereismycar.datasource.device.CheckPermissionImpl;
 import com.example.syl.whereismycar.global.model.MLocation;
 import com.example.syl.whereismycar.ui.presenter.MainPresenter;
 
 public class MainActivity extends BaseActivity implements MainPresenter.View, MainPresenter.Navigator {
 
     MainPresenter presenter;
-
-    DataLocationsDBImpl getLocationMock;
 
     Button btn_save_location, btn_last_location, btn_delete_location;
     TextView tv_actual_location;
@@ -46,9 +45,8 @@ public class MainActivity extends BaseActivity implements MainPresenter.View, Ma
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setIcon(R.mipmap.ic_launcher);
 
-        getLocationMock = new DataLocationsDBImpl();
 
-        presenter = new MainPresenter(this, getLocationMock);
+        presenter = new MainPresenter(this, new DataLocationsDBImpl(this), new CheckPermissionImpl(this));
         presenter.setView(this);
         presenter.setNavigator(this);
         presenter.initialize();

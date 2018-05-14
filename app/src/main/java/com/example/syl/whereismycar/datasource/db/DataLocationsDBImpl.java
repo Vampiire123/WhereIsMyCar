@@ -13,18 +13,34 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.example.syl.whereismycar.datasource.mock;
+package com.example.syl.whereismycar.datasource.db;
+
+import android.content.Context;
+import android.support.v4.content.ContextCompat;
 
 import com.example.syl.whereismycar.global.model.MLocation;
 import com.example.syl.whereismycar.global.model.MLocation_Table;
 import com.example.syl.whereismycar.usecase.DataLocations;
+import com.raizlabs.android.dbflow.config.FlowConfig;
+import com.raizlabs.android.dbflow.config.FlowManager;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 
 import java.util.List;
 
 public class DataLocationsDBImpl implements DataLocations {
 
+    Context context;
+
     static final int LIMIT = 5;
+
+    public DataLocationsDBImpl(Context context) {
+        this.context = context;
+        initDB();
+    }
+
+    private void initDB() {
+        FlowManager.init(new FlowConfig.Builder(context).build());
+    }
 
     @Override
     public void getLocation(Listener listener) {
