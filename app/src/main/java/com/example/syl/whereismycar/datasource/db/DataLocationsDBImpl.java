@@ -95,8 +95,12 @@ public class DataLocationsDBImpl implements DataLocations, LocationListener {
     }
 
     @Override
-    public boolean deleteLocationsFromDB() {
-        return SQLite.delete().from(MLocation.class).executeUpdateDelete() != 0;
+    public void deleteLocationsFromDB(Listener listener) {
+        if(SQLite.delete().from(MLocation.class).executeUpdateDelete() != 0) {
+            listener.onSuccess(null);
+        } else {
+            listener.onError();
+        }
     }
 
     private void checkSizeMLocationTable() {

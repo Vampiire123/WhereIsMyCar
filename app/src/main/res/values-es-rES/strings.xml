@@ -9,7 +9,7 @@
     <string name="welcome_back">¡Bienvenido/a de vuelta!</string>
     <string name="saved_location">"Localización guardada en "</string>
     <string name="delete_completed">Borradas todas las localizaciones</string>
-    <string name="delete_incompleted">No se pudo borrar</string>
+    <string name="delete_no_completed">No se pudo borrar</string>
     <string name="delete">Borrar localizaciones</string>
     <string name="error_saving_location">No se pudo guardar la localización</string>
     <string name="error_loading_location">No tienes última posición</string>

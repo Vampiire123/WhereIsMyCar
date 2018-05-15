@@ -74,7 +74,7 @@ public class MainPresenter extends Presenter<MainPresenter.View, MainPresenter.N
 
     @Override
     public void destroy() {
-
+        System.exit(0);
     }
 
     public void onSaveLocationButtonClicked() {
@@ -107,11 +107,17 @@ public class MainPresenter extends Presenter<MainPresenter.View, MainPresenter.N
     }
 
     public void onDeleteLocationButtonClicked() {
-        if (dataLocations.deleteLocationsFromDB()) {
-            view.showMessage(context.getString(R.string.delete_completed));
-        } else {
-            view.showMessage(context.getString(R.string.delete_incompleted));
-        }
+        dataLocations.deleteLocationsFromDB(new DataLocations.Listener() {
+            @Override
+            public void onSuccess(MLocation location) {
+                view.showMessage(context.getString(R.string.delete_completed));
+            }
+
+            @Override
+            public void onError() {
+                view.showMessage(context.getString(R.string.delete_no_completed));
+            }
+        });
     }
 
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
@@ -129,7 +135,7 @@ public class MainPresenter extends Presenter<MainPresenter.View, MainPresenter.N
                     }
                 });
             } else {
-                System.exit(0);
+                destroy();
             }
         }
     }

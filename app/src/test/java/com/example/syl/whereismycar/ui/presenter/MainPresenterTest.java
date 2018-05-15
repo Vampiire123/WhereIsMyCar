@@ -22,7 +22,6 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.when;
-import static org.mockito.internal.verification.VerificationModeFactory.times;
 
 public class MainPresenterTest {
 
@@ -116,6 +115,98 @@ public class MainPresenterTest {
 
         assertEquals(stringCaptor.getValue(), "Error saving location");
     }
+    
+    @Test
+    public void shouldLoadLocationFromDBWhenLastLocationButtonIsClicked(){
+        givenLoadLocationFromDB(new MLocation());
+
+        presenter.onLoadLastLocationButtonClicked();
+
+        verify(mockView).showMessage("MLocation{id=0, latitude=0.0, longitude=0.0, address=null}");
+    }
+
+    @Test
+    public void shouldNavigateToMapsActivityWhenLastLocationButtonIsClicked(){
+        givenLoadLocationFromDB(new MLocation());
+
+        presenter.onLoadLastLocationButtonClicked();
+
+        verify(mockNavigator).navigateToMap(any(MLocation.class));
+    }
+
+    @Test
+    public void shouldShowErrorWhenLastLocationButtonIsClickedAndDBReturnsError(){
+        givenMockedStrings();
+        givenLoadLocationFromDBError();
+
+        presenter.onLoadLastLocationButtonClicked();
+
+        verify(mockView).showMessage("Error loading last location");
+    }
+
+    @Test
+    public void shouldDeleteLocationInDBWhenDeleteButtonIsClicked(){
+        givenMockedStrings();
+        givenDeleteLocationsFromDB();
+
+        presenter.onDeleteLocationButtonClicked();
+
+        verify(mockView).showMessage("Deleted completed");
+    }
+
+    @Test
+    public void shouldShowErrorWhenDeleteButtonIsClickedAndDBReturnsError(){
+        givenMockedStrings();
+        givenDeleteLocationsFromDBError();
+
+        presenter.onDeleteLocationButtonClicked();
+
+        verify(mockView).showMessage("Deleted no completed");
+    }
+
+    private void givenDeleteLocationsFromDBError() {
+        doAnswer(new Answer() {
+            @Override
+            public Object answer(InvocationOnMock invocation) throws Throwable {
+                DataLocations.Listener listener = (DataLocations.Listener) invocation.getArguments()[0];
+                listener.onError();
+                return null;
+            }
+        }).when(mockDataLocationsDBImpl).deleteLocationsFromDB(any(DataLocations.Listener.class));
+    }
+
+    private void givenDeleteLocationsFromDB() {
+        doAnswer(new Answer() {
+            @Override
+            public Object answer(InvocationOnMock invocation) throws Throwable {
+                DataLocations.Listener listener = (DataLocations.Listener) invocation.getArguments()[0];
+                listener.onSuccess(null);
+                return null;
+            }
+        }).when(mockDataLocationsDBImpl).deleteLocationsFromDB(any(DataLocations.Listener.class));
+    }
+
+    private void givenLoadLocationFromDBError() {
+        doAnswer(new Answer() {
+            @Override
+            public Object answer(InvocationOnMock invocation) throws Throwable {
+                DataLocations.Listener listener = (DataLocations.Listener) invocation.getArguments()[0];
+                listener.onError();
+                return null;
+            }
+        }).when(mockDataLocationsDBImpl).getLocationFromDB(any(DataLocations.Listener.class));
+    }
+
+    private void givenLoadLocationFromDB(final MLocation mLocation) {
+        doAnswer(new Answer() {
+            @Override
+            public Object answer(InvocationOnMock invocation) throws Throwable {
+                DataLocations.Listener listener = (DataLocations.Listener) invocation.getArguments()[0];
+                listener.onSuccess(mLocation);
+                return null;
+            }
+        }).when(mockDataLocationsDBImpl).getLocationFromDB(any(DataLocations.Listener.class));
+    }
 
     private void givenErrorSavingLocationToDB() {
         doAnswer(new Answer() {
@@ -166,6 +257,9 @@ public class MainPresenterTest {
         when(mockContext.getString(R.string.welcome_back)).thenReturn("Welcome back!");
         when(mockContext.getString(R.string.saved_location)).thenReturn("Saved location");
         when(mockContext.getString(R.string.error_saving_location)).thenReturn("Error saving location");
+        when(mockContext.getString(R.string.error_loading_location)).thenReturn("Error loading last location");
+        when(mockContext.getString(R.string.delete_completed)).thenReturn("Deleted completed");
+        when(mockContext.getString(R.string.delete_no_completed)).thenReturn("Deleted no completed");
     }
 
     private void givenPermissions(boolean permission) {

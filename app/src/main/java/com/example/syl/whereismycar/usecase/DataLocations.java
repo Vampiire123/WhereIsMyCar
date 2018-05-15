@@ -22,7 +22,7 @@ public interface DataLocations {
     void getCurrentLocation(Listener listener);
     void getLocationFromDB(Listener listener);
     void saveLocationToDB(MLocation location, Listener listener);
-    boolean deleteLocationsFromDB();
+    void deleteLocationsFromDB(Listener listener);
 
     interface Listener {
         void onSuccess(MLocation location);
