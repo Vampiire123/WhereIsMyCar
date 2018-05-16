@@ -13,4 +13,5 @@
     <string name="error_saving_location">Error saving location</string>
     <string name="error_loading_location">You don\'t have last position</string>
     <string name="error_getting_location">Error getting your current location</string>
+    <string name="try_again">Try it again later</string>
 </resources>

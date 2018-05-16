@@ -78,24 +78,28 @@ public class MainPresenter extends Presenter<MainPresenter.View, MainPresenter.N
     }
 
     public void onSaveLocationButtonClicked() {
-        dataLocations.saveLocationToDB(this.actualLocation, new DataLocations.Listener() {
-            @Override
-            public void onSuccess(MLocation location) {
-                view.showMessage(context.getString(R.string.saved_location) + " " + location.toString());
-            }
+        if(actualLocation.isValid()) {
+            dataLocations.saveLocationToDB(this.actualLocation, new DataLocations.Listener() {
+                @Override
+                public void onSuccess(MLocation location) {
+                    view.showMessage(context.getString(R.string.saved_location) + " " + location.getAddress());
+                }
 
-            @Override
-            public void onError() {
-                view.showMessage(context.getString(R.string.error_saving_location));
-            }
-        });
+                @Override
+                public void onError() {
+                    view.showMessage(context.getString(R.string.error_saving_location));
+                }
+            });
+        } else {
+            view.showMessage(context.getString(R.string.try_again));
+        }
     }
 
     public void onLoadLastLocationButtonClicked() {
         dataLocations.getLocationFromDB(new DataLocations.Listener() {
             @Override
             public void onSuccess(MLocation location) {
-                view.showMessage(location.toString());
+                view.showMessage(location.getAddress());
                 navigator.navigateToMap(location);
             }
 
@@ -126,6 +130,7 @@ public class MainPresenter extends Presenter<MainPresenter.View, MainPresenter.N
                 dataLocations.getCurrentLocation(new DataLocations.Listener() {
                     @Override
                     public void onSuccess(MLocation location) {
+                        actualLocation = location;
                         view.showActualLocation(location);
                     }
 

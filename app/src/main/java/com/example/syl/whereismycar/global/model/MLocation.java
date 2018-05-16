@@ -64,6 +64,10 @@ public class MLocation extends BaseModel {
         this.address = address;
     }
 
+    public boolean isValid() {
+        return getAddress() != null;
+    }
+
     @Override
     public String toString() {
         return "MLocation{"
