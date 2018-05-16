@@ -46,7 +46,7 @@ public class MainPresenter extends Presenter<MainPresenter.View, MainPresenter.N
             dataLocations.getCurrentLocation(new DataLocations.Listener() {
                 @Override
                 public void onSuccess(MLocation location) {
-                    actualLocation = location;
+                    onActualLocationReceived(location);
                     view.showActualLocation(location);
                 }
 
@@ -130,7 +130,7 @@ public class MainPresenter extends Presenter<MainPresenter.View, MainPresenter.N
                 dataLocations.getCurrentLocation(new DataLocations.Listener() {
                     @Override
                     public void onSuccess(MLocation location) {
-                        actualLocation = location;
+                        onActualLocationReceived(location);
                         view.showActualLocation(location);
                     }
 
@@ -143,6 +143,10 @@ public class MainPresenter extends Presenter<MainPresenter.View, MainPresenter.N
                 destroy();
             }
         }
+    }
+
+    public void onActualLocationReceived(MLocation mLocation) {
+        this.actualLocation = mLocation;
     }
 
     public interface View {

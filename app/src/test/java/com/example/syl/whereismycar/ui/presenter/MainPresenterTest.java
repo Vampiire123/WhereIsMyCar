@@ -90,8 +90,15 @@ public class MainPresenterTest {
 
     @Test
     public void shouldShowSaveLocationMessageWhenSaveLocationButtonIsClicked(){
+        MLocation mLocation = new MLocation();
+        mLocation.setAddress("Calle Paz");
+        mLocation.setLatitude(20.34324f);
+        mLocation.setLongitude(-3.53453f);
+
         givenMockedStrings();
-        givenSaveLocationToDB(new MLocation());
+        givenSaveLocationToDB(mLocation);
+
+        presenter.onActualLocationReceived(mLocation);
 
         presenter.onSaveLocationButtonClicked();
 
@@ -99,14 +106,21 @@ public class MainPresenterTest {
 
         verify(mockView).showMessage(stringCaptor.capture());
 
-        assertEquals(stringCaptor.getValue(), "Saved location MLocation{id=0, latitude=0.0, longitude=0.0, address=null}");
+        assertEquals(stringCaptor.getValue(), "Saved location Calle Paz");
     }
 
     @Test
     public void shouldShowErrorMessageWhenSaveLocationButtonIsClickedAndDBReturnsError(){
+        MLocation mLocation = new MLocation();
+        mLocation.setAddress("Calle Paz");
+        mLocation.setLatitude(20.34324f);
+        mLocation.setLongitude(-3.53453f);
+
         givenMockedStrings();
+        givenSaveLocationToDB(mLocation);
         givenErrorSavingLocationToDB();
 
+        presenter.onActualLocationReceived(mLocation);
         presenter.onSaveLocationButtonClicked();
 
         ArgumentCaptor<String> stringCaptor = ArgumentCaptor.forClass(String.class);
@@ -118,11 +132,16 @@ public class MainPresenterTest {
     
     @Test
     public void shouldLoadLocationFromDBWhenLastLocationButtonIsClicked(){
-        givenLoadLocationFromDB(new MLocation());
+        MLocation mLocation = new MLocation();
+        mLocation.setAddress("Calle Paz");
+        mLocation.setLatitude(20.34324f);
+        mLocation.setLongitude(-3.53453f);
+
+        givenLoadLocationFromDB(mLocation);
 
         presenter.onLoadLastLocationButtonClicked();
 
-        verify(mockView).showMessage("MLocation{id=0, latitude=0.0, longitude=0.0, address=null}");
+        verify(mockView).showMessage("Calle Paz");
     }
 
     @Test
@@ -260,6 +279,7 @@ public class MainPresenterTest {
         when(mockContext.getString(R.string.error_loading_location)).thenReturn("Error loading last location");
         when(mockContext.getString(R.string.delete_completed)).thenReturn("Deleted completed");
         when(mockContext.getString(R.string.delete_no_completed)).thenReturn("Deleted no completed");
+        when(mockContext.getString(R.string.try_again)).thenReturn("Try it later");
     }
 
     private void givenPermissions(boolean permission) {
