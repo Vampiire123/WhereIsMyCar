@@ -18,7 +18,6 @@ package com.example.syl.whereismycar.ui.activity;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.view.View;
@@ -36,8 +35,8 @@ public class MainActivity extends BaseActivity implements MainPresenter.View, Ma
 
     MainPresenter presenter;
 
-    Button btn_save_location, btn_last_location, btn_delete_location;
-    TextView tv_actual_location;
+    Button btnSaveLocation, btnLastLocation, btnDeleteLocation;
+    TextView tvActualLocation;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -52,24 +51,24 @@ public class MainActivity extends BaseActivity implements MainPresenter.View, Ma
         presenter.setNavigator(this);
         presenter.initialize();
 
-        tv_actual_location = findViewById(R.id.tv_actual_location);
-        tv_actual_location.setText(getString(R.string.getting_location));
-        btn_last_location = findViewById(R.id.btn_last_location);
-        btn_save_location = findViewById(R.id.btn_save_location);
-        btn_delete_location = findViewById(R.id.btn_delete_location);
-        btn_last_location.setOnClickListener(new android.view.View.OnClickListener() {
+        tvActualLocation = findViewById(R.id.tv_actual_location);
+        tvActualLocation.setText(getString(R.string.getting_location));
+        btnLastLocation = findViewById(R.id.btn_last_location);
+        btnSaveLocation = findViewById(R.id.btn_save_location);
+        btnDeleteLocation = findViewById(R.id.btn_delete_location);
+        btnLastLocation.setOnClickListener(new android.view.View.OnClickListener() {
             @Override
             public void onClick(android.view.View v) {
                 presenter.onLoadLastLocationButtonClicked();
             }
         });
-        btn_save_location.setOnClickListener(new android.view.View.OnClickListener() {
+        btnSaveLocation.setOnClickListener(new android.view.View.OnClickListener() {
             @Override
             public void onClick(android.view.View v) {
                 presenter.onSaveLocationButtonClicked();
             }
         });
-        btn_delete_location.setOnClickListener(new View.OnClickListener() {
+        btnDeleteLocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 presenter.onDeleteLocationButtonClicked();
@@ -85,7 +84,7 @@ public class MainActivity extends BaseActivity implements MainPresenter.View, Ma
     @SuppressLint("SetTextI18n")
     @Override
     public void showActualLocation(MLocation mLocation) {
-        tv_actual_location.setText(getString(R.string.current_location) + "\n" + mLocation.getAddress() + "\n"
+        tvActualLocation.setText(getString(R.string.current_location) + "\n" + mLocation.getAddress() + "\n"
                 + mLocation.getLatitude() + " " + mLocation.getLongitude());
     }
 
