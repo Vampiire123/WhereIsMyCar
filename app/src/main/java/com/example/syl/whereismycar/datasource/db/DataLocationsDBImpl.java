@@ -25,7 +25,6 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.provider.Settings;
-import android.support.v4.content.ContextCompat;
 
 import com.example.syl.whereismycar.global.model.MLocation;
 import com.example.syl.whereismycar.global.model.MLocation_Table;
@@ -96,7 +95,7 @@ public class DataLocationsDBImpl implements DataLocations, LocationListener {
 
     @Override
     public void deleteLocationsFromDB(Listener listener) {
-        if(SQLite.delete().from(MLocation.class).executeUpdateDelete() != 0) {
+        if (SQLite.delete().from(MLocation.class).executeUpdateDelete() != 0) {
             listener.onSuccess(null);
         } else {
             listener.onError();

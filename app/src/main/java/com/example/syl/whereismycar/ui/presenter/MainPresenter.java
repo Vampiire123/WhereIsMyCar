@@ -78,7 +78,7 @@ public class MainPresenter extends Presenter<MainPresenter.View, MainPresenter.N
     }
 
     public void onSaveLocationButtonClicked() {
-        if(actualLocation.isValid()) {
+        if (actualLocation.isValid()) {
             dataLocations.saveLocationToDB(this.actualLocation, new DataLocations.Listener() {
                 @Override
                 public void onSuccess(MLocation location) {
@@ -151,7 +151,9 @@ public class MainPresenter extends Presenter<MainPresenter.View, MainPresenter.N
 
     public interface View {
         void showActualLocation(MLocation mLocation);
+
         void showMessage(String msg);
+
         void showPermissionRequest();
     }
 

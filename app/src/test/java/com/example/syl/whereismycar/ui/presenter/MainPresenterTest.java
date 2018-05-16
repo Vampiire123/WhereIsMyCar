@@ -50,7 +50,7 @@ public class MainPresenterTest {
     }
 
     @Test
-    public void shouldShowWelcomeMessageOnStart(){
+    public void shouldShowWelcomeMessageOnStart() {
         givenMockedStrings();
 
         presenter.initialize();
@@ -59,7 +59,7 @@ public class MainPresenterTest {
     }
 
     @Test
-    public void shouldShowPermissionsDialogOnStart(){
+    public void shouldShowPermissionsDialogOnStart() {
         givenPermissions(false);
 
         presenter.initialize();
@@ -68,7 +68,7 @@ public class MainPresenterTest {
     }
 
     @Test
-    public void shouldShowActualLocationOnStart(){
+    public void shouldShowActualLocationOnStart() {
         givenPermissions(true);
         givenCurrentLocation(new MLocation());
 
@@ -78,7 +78,7 @@ public class MainPresenterTest {
     }
 
     @Test
-    public void shouldShowErrorIfDBReturnsErrorInsteadLocationOnStart(){
+    public void shouldShowErrorIfDBReturnsErrorInsteadLocationOnStart() {
         givenPermissions(true);
         givenErrorGettingActualLocation();
         givenMockedStrings();
@@ -89,7 +89,7 @@ public class MainPresenterTest {
     }
 
     @Test
-    public void shouldShowSaveLocationMessageWhenSaveLocationButtonIsClicked(){
+    public void shouldShowSaveLocationMessageWhenSaveLocationButtonIsClicked() {
         MLocation mLocation = new MLocation();
         mLocation.setAddress("Calle Paz");
         mLocation.setLatitude(20.34324f);
@@ -110,7 +110,7 @@ public class MainPresenterTest {
     }
 
     @Test
-    public void shouldShowErrorMessageWhenSaveLocationButtonIsClickedAndDBReturnsError(){
+    public void shouldShowErrorMessageWhenSaveLocationButtonIsClickedAndDBReturnsError() {
         MLocation mLocation = new MLocation();
         mLocation.setAddress("Calle Paz");
         mLocation.setLatitude(20.34324f);
@@ -129,9 +129,9 @@ public class MainPresenterTest {
 
         assertEquals(stringCaptor.getValue(), "Error saving location");
     }
-    
+
     @Test
-    public void shouldLoadLocationFromDBWhenLastLocationButtonIsClicked(){
+    public void shouldLoadLocationFromDBWhenLastLocationButtonIsClicked() {
         MLocation mLocation = new MLocation();
         mLocation.setAddress("Calle Paz");
         mLocation.setLatitude(20.34324f);
@@ -145,7 +145,7 @@ public class MainPresenterTest {
     }
 
     @Test
-    public void shouldNavigateToMapsActivityWhenLastLocationButtonIsClicked(){
+    public void shouldNavigateToMapsActivityWhenLastLocationButtonIsClicked() {
         givenLoadLocationFromDB(new MLocation());
 
         presenter.onLoadLastLocationButtonClicked();
@@ -154,7 +154,7 @@ public class MainPresenterTest {
     }
 
     @Test
-    public void shouldShowErrorWhenLastLocationButtonIsClickedAndDBReturnsError(){
+    public void shouldShowErrorWhenLastLocationButtonIsClickedAndDBReturnsError() {
         givenMockedStrings();
         givenLoadLocationFromDBError();
 
@@ -164,7 +164,7 @@ public class MainPresenterTest {
     }
 
     @Test
-    public void shouldDeleteLocationInDBWhenDeleteButtonIsClicked(){
+    public void shouldDeleteLocationInDBWhenDeleteButtonIsClicked() {
         givenMockedStrings();
         givenDeleteLocationsFromDB();
 
@@ -174,7 +174,7 @@ public class MainPresenterTest {
     }
 
     @Test
-    public void shouldShowErrorWhenDeleteButtonIsClickedAndDBReturnsError(){
+    public void shouldShowErrorWhenDeleteButtonIsClickedAndDBReturnsError() {
         givenMockedStrings();
         givenDeleteLocationsFromDBError();
 
