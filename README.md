@@ -10,8 +10,16 @@ Hey everyone! this is a little example in MVP of get current location and show i
 ## How to use  
 It's very simple to use, you just have to save your location when you leave your car in some place. Then you will have the option to load the last location you saved in the database and it will show you in the map!
 
-<img src="https://i.imgur.com/s5JF52T.jpg" height="500px">
-<img src="https://i.imgur.com/Z8e9dLW.jpg" height="500px">
+<table>
+	<tr>
+		<td>
+			<img src="https://i.imgur.com/s5JF52T.jpg" width="300px">
+		</td>
+		<td>
+			<img src="https://i.imgur.com/Z8e9dLW.jpg" width="300px">
+		</td>
+	</tr>
+</table>
 
 ## Developed By
 - Sylvia Domenech
