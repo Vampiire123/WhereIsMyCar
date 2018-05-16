@@ -1,4 +1,4 @@
-<img src="https://travis-ci.org/Vampiire123/WhereIsMyCar.svg?branch=master">
+<img src="https://travis-ci.org/Vampiire123/WhereIsMyCar">
 
 # WhereIsMyCar
 Hey everyone! this is a little example in MVP of get current location and show it in a map, saving the data into a local database.
