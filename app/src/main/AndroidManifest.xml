@@ -13,20 +13,44 @@
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <receiver android:name=".ui.widget.LoadLocationWidget">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/load_location_widget_info" />
+        </receiver>
+        <receiver
+            android:name=".datasource.WidgetBroadcast"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.INPUT_METHOD_CHANGED" />
+            </intent-filter>
+        </receiver>
+        <receiver android:name=".ui.widget.SaveLocationWidget">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/save_location_widget_info" />
+        </receiver>
+
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
         <activity
             android:name=".ui.activity.MapsActivity"
-            android:label="@string/app_name">
-
-        </activity>
-
-        <activity android:name=".ui.activity.MainActivity"
+            android:label="@string/app_name" />
+        <activity
+            android:name=".ui.activity.MainActivity"
             android:label="@string/app_name">
             <intent-filter>
-
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />

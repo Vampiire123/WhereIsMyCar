@@ -4,7 +4,7 @@
     <string name="title_activity_maps">Mapa</string>
     <string name="btn_save_location">Guardar localización</string>
     <string name="btn_last_location">Última localización</string>
-    <string name="getting_location">Obteniendo localización...</string>
+    <string name="getting_location">Obteniendo localización…</string>
     <string name="current_location">Localización actual:</string>
     <string name="welcome_back">¡Bienvenido/a de vuelta!</string>
     <string name="saved_location">"Localización guardada en"</string>
@@ -15,4 +15,5 @@
     <string name="error_loading_location">No tienes última posición</string>
     <string name="error_getting_location">Error obteniendo tu localización actual</string>
     <string name="try_again">Inténtalo otra vez en un momento</string>
+    <string name="saving_location">Guardando localización…</string>
 </resources>

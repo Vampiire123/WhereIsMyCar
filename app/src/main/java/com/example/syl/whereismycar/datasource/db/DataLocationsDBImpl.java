@@ -63,8 +63,8 @@ public class DataLocationsDBImpl implements DataLocations, LocationListener {
             Intent settingsIntent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
             context.startActivity(settingsIntent);
         }
-        mlocManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, this);
-        mlocManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
+        mlocManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1000, 1, this);
+        mlocManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 1, this);
     }
 
     @Override

@@ -3,7 +3,7 @@
     <string name="title_activity_maps">Map</string>
     <string name="btn_save_location">Save location</string>
     <string name="btn_last_location">Last location</string>
-    <string name="getting_location">Getting location...</string>
+    <string name="getting_location">Getting location…</string>
     <string name="current_location">Current location:</string>
     <string name="welcome_back">Welcome back!</string>
     <string name="saved_location">Saved location in</string>
@@ -14,4 +14,7 @@
     <string name="error_loading_location">You don\'t have last position</string>
     <string name="error_getting_location">Error getting your current location</string>
     <string name="try_again">Try it again later</string>
+    <string name="saving_location">Saving location…</string>
+    <string name="appwidget_text">EXAMPLE</string>
+    <string name="add_widget">Add widget</string>
 </resources>
