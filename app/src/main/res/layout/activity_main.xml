@@ -28,23 +28,11 @@
         android:layout_height="wrap_content"
         android:background="@drawable/button"
         android:text="@string/btn_last_location"
-        app:layout_constraintBottom_toTopOf="@+id/btn_delete_location"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_save_location" />
-
-    <Button
-        android:id="@+id/btn_delete_location"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/button"
-        android:text="@string/delete"
         app:layout_constraintBottom_toTopOf="@+id/tv_actual_location"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_last_location" />
+        app:layout_constraintTop_toBottomOf="@+id/btn_save_location" />
 
     <TextView
         android:id="@+id/tv_actual_location"
@@ -58,5 +46,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_delete_location" />
+        app:layout_constraintTop_toBottomOf="@+id/btn_last_location" />
 </android.support.constraint.ConstraintLayout>

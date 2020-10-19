@@ -35,7 +35,7 @@ public class MainActivity extends BaseActivity implements MainPresenter.View, Ma
 
     MainPresenter presenter;
 
-    Button btnSaveLocation, btnLastLocation, btnDeleteLocation;
+    Button btnSaveLocation, btnLastLocation;
     TextView tvActualLocation;
 
     @Override
@@ -55,7 +55,6 @@ public class MainActivity extends BaseActivity implements MainPresenter.View, Ma
         tvActualLocation.setText(getString(R.string.getting_location));
         btnLastLocation = findViewById(R.id.btn_last_location);
         btnSaveLocation = findViewById(R.id.btn_save_location);
-        btnDeleteLocation = findViewById(R.id.btn_delete_location);
         btnLastLocation.setOnClickListener(new android.view.View.OnClickListener() {
             @Override
             public void onClick(android.view.View v) {
@@ -66,12 +65,6 @@ public class MainActivity extends BaseActivity implements MainPresenter.View, Ma
             @Override
             public void onClick(android.view.View v) {
                 presenter.onSaveLocationButtonClicked();
-            }
-        });
-        btnDeleteLocation.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                presenter.onDeleteLocationButtonClicked();
             }
         });
     }

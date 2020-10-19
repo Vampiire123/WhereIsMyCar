@@ -42,8 +42,6 @@ public class DataLocationsDBImpl implements DataLocations, LocationListener {
     Context context;
     Listener listener;
 
-    static final int LIMIT = 5;
-
     public DataLocationsDBImpl(Context context) {
         this.context = context;
         initDB();
@@ -84,28 +82,12 @@ public class DataLocationsDBImpl implements DataLocations, LocationListener {
 
     @Override
     public void saveLocationToDB(MLocation location, Listener listener) {
-        checkSizeMLocationTable();
+        SQLite.delete().from(MLocation.class).executeUpdateDelete();
 
         if (location.save()) {
             listener.onSuccess(location);
         } else {
             listener.onError();
-        }
-    }
-
-    @Override
-    public void deleteLocationsFromDB(Listener listener) {
-        if (SQLite.delete().from(MLocation.class).executeUpdateDelete() != 0) {
-            listener.onSuccess(null);
-        } else {
-            listener.onError();
-        }
-    }
-
-    private void checkSizeMLocationTable() {
-        List<MLocation> mLocations = SQLite.select().from(MLocation.class).queryList();
-        if (mLocations.size() >= DataLocationsDBImpl.LIMIT) {
-            SQLite.delete().from(MLocation.class).where(MLocation_Table.id.eq(mLocations.get(0).getId())).execute();
         }
     }
 

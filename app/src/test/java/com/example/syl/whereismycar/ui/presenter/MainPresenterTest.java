@@ -163,48 +163,6 @@ public class MainPresenterTest {
         verify(mockView).showMessage("Error loading last location");
     }
 
-    @Test
-    public void shouldDeleteLocationInDBWhenDeleteButtonIsClicked() {
-        givenMockedStrings();
-        givenDeleteLocationsFromDB();
-
-        presenter.onDeleteLocationButtonClicked();
-
-        verify(mockView).showMessage("Deleted completed");
-    }
-
-    @Test
-    public void shouldShowErrorWhenDeleteButtonIsClickedAndDBReturnsError() {
-        givenMockedStrings();
-        givenDeleteLocationsFromDBError();
-
-        presenter.onDeleteLocationButtonClicked();
-
-        verify(mockView).showMessage("Deleted no completed");
-    }
-
-    private void givenDeleteLocationsFromDBError() {
-        doAnswer(new Answer() {
-            @Override
-            public Object answer(InvocationOnMock invocation) throws Throwable {
-                DataLocations.Listener listener = (DataLocations.Listener) invocation.getArguments()[0];
-                listener.onError();
-                return null;
-            }
-        }).when(mockDataLocationsDBImpl).deleteLocationsFromDB(any(DataLocations.Listener.class));
-    }
-
-    private void givenDeleteLocationsFromDB() {
-        doAnswer(new Answer() {
-            @Override
-            public Object answer(InvocationOnMock invocation) throws Throwable {
-                DataLocations.Listener listener = (DataLocations.Listener) invocation.getArguments()[0];
-                listener.onSuccess(null);
-                return null;
-            }
-        }).when(mockDataLocationsDBImpl).deleteLocationsFromDB(any(DataLocations.Listener.class));
-    }
-
     private void givenLoadLocationFromDBError() {
         doAnswer(new Answer() {
             @Override

@@ -110,20 +110,6 @@ public class MainPresenter extends Presenter<MainPresenter.View, MainPresenter.N
         });
     }
 
-    public void onDeleteLocationButtonClicked() {
-        dataLocations.deleteLocationsFromDB(new DataLocations.Listener() {
-            @Override
-            public void onSuccess(MLocation location) {
-                view.showMessage(context.getString(R.string.delete_completed));
-            }
-
-            @Override
-            public void onError() {
-                view.showMessage(context.getString(R.string.delete_no_completed));
-            }
-        });
-    }
-
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         if (requestCode == 1000) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
